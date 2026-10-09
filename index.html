@@ -47,6 +47,7 @@
     <section class="layout">
       <div class="globe-card">
         <div id="globe"></div>
+        <button id="panelToggle" class="panel-toggle" type="button" aria-controls="sidebar" aria-expanded="true">Hide panels</button>
         <div id="status" class="status">Loading USGS data…</div>
         <div class="legend">
           <span><i class="dot small"></i> Smaller</span>
@@ -55,31 +56,39 @@
         </div>
       </div>
 
-      <aside class="sidebar">
-        <section class="panel">
-          <h2>Overview</h2>
-          <div class="stats">
-            <div><span>Events</span><strong id="eventCount">—</strong></div>
-            <div><span>Largest</span><strong id="largestMag">—</strong></div>
-            <div><span>Average</span><strong id="avgMag">—</strong></div>
-            <div><span>Updated</span><strong id="updatedAt">—</strong></div>
+      <aside id="sidebar" class="sidebar">
+        <details class="panel" open>
+          <summary>Overview</summary>
+          <div class="panel-content">
+            <div class="stats">
+              <div><span>Events</span><strong id="eventCount">—</strong></div>
+              <div><span>Largest</span><strong id="largestMag">—</strong></div>
+              <div><span>Average</span><strong id="avgMag">—</strong></div>
+              <div><span>Updated</span><strong id="updatedAt">—</strong></div>
+            </div>
           </div>
-        </section>
+        </details>
 
-        <section class="panel">
-          <h2>Selected event</h2>
-          <div id="selectedEvent" class="selected empty">Click an earthquake on the globe.</div>
-        </section>
+        <details class="panel" open>
+          <summary>Selected event</summary>
+          <div class="panel-content">
+            <div id="selectedEvent" class="selected empty">Click an earthquake on the globe.</div>
+          </div>
+        </details>
 
-        <section class="panel">
-          <h2>Magnitude distribution</h2>
-          <div id="distribution" class="distribution"></div>
-        </section>
+        <details class="panel" open>
+          <summary>Magnitude distribution</summary>
+          <div class="panel-content">
+            <div id="distribution" class="distribution"></div>
+          </div>
+        </details>
 
-        <section class="panel source">
-          <h2>Data</h2>
-          <p>Earthquake data comes directly from the <a href="https://earthquake.usgs.gov/earthquakes/feed/" target="_blank" rel="noopener">USGS Earthquake Hazards Program</a>.</p>
-        </section>
+        <details class="panel source" open>
+          <summary>Data</summary>
+          <div class="panel-content">
+            <p>Earthquake data comes directly from the <a href="https://earthquake.usgs.gov/earthquakes/feed/" target="_blank" rel="noopener">USGS Earthquake Hazards Program</a>.</p>
+          </div>
+        </details>
       </aside>
     </section>
   </main>

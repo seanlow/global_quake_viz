@@ -23,6 +23,9 @@ const minMagValue = document.querySelector("#minMagValue");
 const rotateToggle = document.querySelector("#rotateToggle");
 const refreshBtn = document.querySelector("#refreshBtn");
 const resetBtn = document.querySelector("#resetBtn");
+const panelToggle = document.querySelector("#panelToggle");
+const sidebar = document.querySelector("#sidebar");
+const panels = sidebar.querySelectorAll("details");
 const eventCount = document.querySelector("#eventCount");
 const largestMag = document.querySelector("#largestMag");
 const avgMag = document.querySelector("#avgMag");
@@ -59,6 +62,7 @@ function init() {
 
   resize();
   window.addEventListener("resize", resize);
+  new ResizeObserver(resize).observe(globeEl);
 
   canvas.addEventListener("pointerdown", e => {
     dragging = true;
@@ -91,6 +95,12 @@ function init() {
   rotateToggle.addEventListener("change", () => {});
   refreshBtn.addEventListener("click", loadFeed);
   resetBtn.addEventListener("click", resetView);
+  panelToggle.addEventListener("click", () => {
+    setSidebarVisible(sidebar.hidden);
+  });
+  panels.forEach(panel => panel.addEventListener("toggle", () => {
+    if ([...panels].every(item => !item.open)) setSidebarVisible(false);
+  }));
 
   draw();
   loadFeed();
@@ -339,19 +349,30 @@ function drawGraticule(cx,cy,r) {
 function drawLatitude(cx,cy,r,lat) {
   const pts=[];
   for(let lon=-180;lon<=180;lon+=3) {
-    const p=project(lat,lon,cx,cy,r);
-    if(p.visible) pts.push(p);
+    pts.push(project(lat,lon,cx,cy,r));
   }
-  strokePath(pts);
+  strokeVisiblePath(pts);
 }
 
 function drawLongitude(cx,cy,r,lon) {
   const pts=[];
   for(let lat=-90;lat<=90;lat+=3) {
-    const p=project(lat,lon,cx,cy,r);
-    if(p.visible) pts.push(p);
+    pts.push(project(lat,lon,cx,cy,r));
   }
-  strokePath(pts);
+  strokeVisiblePath(pts);
+}
+
+function strokeVisiblePath(pts) {
+  let segment=[];
+  for(const p of pts) {
+    if(p.visible) {
+      segment.push(p);
+    } else {
+      strokePath(segment);
+      segment=[];
+    }
+  }
+  strokePath(segment);
 }
 
 function strokePath(pts) {
@@ -459,6 +480,12 @@ function resetView() {
   draw();
 }
 
+function setSidebarVisible(visible) {
+  sidebar.hidden = !visible;
+  panelToggle.textContent = visible ? "Hide panels" : "Show panels";
+  panelToggle.setAttribute("aria-expanded", String(visible));
+}
+
 function resize() {
   const rect=globeEl.getBoundingClientRect();
   dpr=Math.min(window.devicePixelRatio||1,2);
@@ -484,8 +511,8 @@ function magnitudeColor(m) {
   if(m>=6)return 'rgba(255, 77, 103, 0.75)';
   if(m>=5)return 'rgba(255, 77, 103, 0.50)';
   if(m>=4)return 'rgba(255, 210, 77, 0.33)';
-  if(m>=3)return `rgba(117, 214, 154, 0.25)`;
-  return "#65b7ff";
+  if(m>=3)return 'rgba(117, 214, 154, 0.25)';
+  return 'rgba(101, 183, 255, 0.25)';
 }
 
 function clamp(v,a,b){return Math.max(a,Math.min(b,v));}
