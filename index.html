@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>US Geological Survey Visualization</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">US Geological Survey Visualization</p>
+        <h1>3D Global Earthquake Map</h1>
+        <p class="subtitle">A lightweight interactive 3D view of recent earthquakes, streaming via USGS data.</p>
+      </div>
+      <div class="controls">
+        <label>Feed
+          <select id="feedSelect">
+            <option value="4.5_day" selected>M4.5+ — past day (fast)</option>
+            <option value="all_day">All earthquakes — past day</option>
+            <option value="significant_day">Significant — past day</option>
+            <option value="all_week">All earthquakes — past week</option>
+            <option value="2.5_week">M2.5+ — past week</option>
+            <option value="4.5_week">M4.5+ — past week</option>
+            <option value="significant_week">Significant — past week</option>
+            <option value="all_month">All earthquakes — past month</option>
+          </select>
+        </label>
+        <label>Minimum magnitude
+          <input id="minMag" type="range" min="0" max="7" step="0.1" value="0">
+          <span id="minMagValue">0.0</span>
+        </label>
+        <label class="check"><input id="rotateToggle" type="checkbox" checked> Auto-rotate</label>
+        <button id="refreshBtn" type="button">Refresh</button>
+        <button id="resetBtn" type="button">Reset view</button>
+      </div>
+    </header>
+
+    <div id="fileWarning" class="notice hidden">
+      <strong>Run this page through HTTP/HTTPS.</strong>
+      Opening <code>index.html</code> directly as a <code>file://</code> URL prevents the browser from fetching the USGS feed.
+      Use GitHub Pages, VS Code Live Server, or Python's built-in server:
+      <code>python -m http.server 8080</code>, then open <code>http://localhost:8080</code>.
+    </div>
+
+    <section class="layout">
+      <div class="globe-card">
+        <div id="globe"></div>
+        <div id="status" class="status">Loading USGS data…</div>
+        <div class="legend">
+          <span><i class="dot small"></i> Smaller</span>
+          <span><i class="dot medium"></i> M4+</span>
+          <span><i class="dot large"></i> Larger</span>
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <section class="panel">
+          <h2>Overview</h2>
+          <div class="stats">
+            <div><span>Events</span><strong id="eventCount">—</strong></div>
+            <div><span>Largest</span><strong id="largestMag">—</strong></div>
+            <div><span>Average</span><strong id="avgMag">—</strong></div>
+            <div><span>Updated</span><strong id="updatedAt">—</strong></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h2>Selected event</h2>
+          <div id="selectedEvent" class="selected empty">Click an earthquake on the globe.</div>
+        </section>
+
+        <section class="panel">
+          <h2>Magnitude distribution</h2>
+          <div id="distribution" class="distribution"></div>
+        </section>
+
+        <section class="panel source">
+          <h2>Data</h2>
+          <p>Earthquake data comes directly from the <a href="https://earthquake.usgs.gov/earthquakes/feed/" target="_blank" rel="noopener">USGS Earthquake Hazards Program</a>.</p>
+        </section>
+      </aside>
+    </section>
+  </main>
+
+  <script src="./land.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
