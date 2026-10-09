@@ -25,6 +25,7 @@ const refreshBtn = document.querySelector("#refreshBtn");
 const resetBtn = document.querySelector("#resetBtn");
 const panelToggle = document.querySelector("#panelToggle");
 const sidebar = document.querySelector("#sidebar");
+const layout = document.querySelector(".layout");
 const panels = sidebar.querySelectorAll("details");
 const eventCount = document.querySelector("#eventCount");
 const largestMag = document.querySelector("#largestMag");
@@ -482,6 +483,7 @@ function resetView() {
 
 function setSidebarVisible(visible) {
   sidebar.hidden = !visible;
+  layout.classList.toggle("panels-hidden", !visible);
   panelToggle.textContent = visible ? "Hide panels" : "Show panels";
   panelToggle.setAttribute("aria-expanded", String(visible));
 }

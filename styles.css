@@ -24,8 +24,10 @@ input[type="range"] { width: 120px; }
 .hidden { display: none; }
 code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
 .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 18px; min-height: max(520px, calc(100vh - 230px)); }
+.layout.panels-hidden { grid-template-columns: minmax(0, 1fr); }
 .globe-card, .panel { background: rgba(12, 19, 31, .82); border: 1px solid #1e2b3d; border-radius: 16px; box-shadow: 0 20px 60px rgba(0,0,0,.22); }
 .globe-card { min-height: 0; position: relative; overflow: hidden; }
+.layout.panels-hidden .globe-card { min-height: max(680px, calc(100vh - 230px)); }
 #globe { position: absolute; inset: 0; }
 .panel-toggle { position: absolute; top: 14px; inset-inline-end: 14px; z-index: 1; background: rgba(7,11,19,.88); }
 .status { position: absolute; top: 14px; left: 14px; padding: 8px 10px; border-radius: 8px; background: rgba(7,11,19,.78); color: #9eb0c5; font-size: 12px; pointer-events: none; }
@@ -61,6 +63,7 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   .controls { justify-content: flex-start; }
   .layout { grid-template-columns: minmax(0, 1fr); min-height: 0; }
   .globe-card { min-height: 620px; }
+  .layout.panels-hidden .globe-card { min-height: max(620px, calc(100vh - 230px)); }
 }
 @media (max-width: 600px) {
   .app { padding: 16px; }
@@ -68,4 +71,5 @@ code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
   .controls label:first-child { grid-column: 1 / -1; }
   select, button { width: 100%; }
   .globe-card { min-height: 480px; }
+  .layout.panels-hidden .globe-card { min-height: max(480px, calc(100vh - 230px)); }
 }
